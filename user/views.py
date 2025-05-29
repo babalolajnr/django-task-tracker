@@ -1,15 +1,11 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from django.contrib.auth import get_user_model
+from rest_framework import generics
 from .serializers import RegistrationSerializer
 from rest_framework.permissions import AllowAny
 
-class RegistrationView(APIView):
-    permission_classes = [AllowAny]
+User = get_user_model()
 
-    def post(self, request):
-        serializer = RegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class RegistrationView(generics.CreateAPIView):
+    permission_classes = [AllowAny]
+    queryset = User.objects.all()
+    serializer_class = RegistrationSerializer
