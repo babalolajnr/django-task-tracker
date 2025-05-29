@@ -1,4 +1,9 @@
-from django.http import HttpResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
-def hello_world(request):
-    return HttpResponse("Hello World!".encode('utf-8'))
+class HelloView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({"hello": f"{request.user.username}! JWT works."})
