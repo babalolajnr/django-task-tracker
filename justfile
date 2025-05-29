@@ -1,0 +1,2 @@
+start-celery:
+    celery -A config worker -l info

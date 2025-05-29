@@ -1,0 +1,20 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+  maildev:
+    image: maildev/maildev
+    container_name: maildev
+    ports:
+      - "1025:1025" # SMTP
+      - "1080:1080" # Web UI
+    restart: unless-stopped
+
+volumes:
+  redis-data:
