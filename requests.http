@@ -1,0 +1,50 @@
+@host=http://localhost:8000
+@token={{login.response.body.$.access}}
+
+# @name register
+POST /user/register/ HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+  "username": "jane6",
+  "email": "janedoe6@example.com",
+  "password": "Password@123",
+  "confirm_password": "Password@123"
+}
+
+
+###
+
+# @name login
+POST /api/token/ HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+
+{
+  "username": "john",
+  "password": "Password@123"
+}
+
+###
+
+# # @name get-tasks
+GET /api/tasks/ HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+# # @name add-task
+POST /api/tasks/ HTTP/1.1
+Host: {{host}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Get Groceries",
+  "description": "Get groceries from the store",
+  "completed": false
+}
+

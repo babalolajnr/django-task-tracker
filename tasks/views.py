@@ -1,9 +1,15 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from tasks.serializers import TaskSerializer
+from .models import Task
 
-class HelloView(APIView):
+class TaskViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
+    queryset = Task.objects.all() # pyright:ignore
+    serializer_class = TaskSerializer
 
-    def get(self, request):
-        return Response({"hello": f"{request.user.username}! JWT works."})
+    def get_queryset(self):
+        return Task.objects.filter(user=self.request.user) # pyright:ignore
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
